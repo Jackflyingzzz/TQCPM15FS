@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     config = {}
 
-    config["learning_rate"] = 8e-5
+    config["learning_rate"] = 1e-4
     config["learning_starts"] = 0
     config["batch_size"] = 128
 
@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
     env = SubprocVecEnv([resume_env(nb_actuations,i) for i in range(number_servers)], start_method='spawn')
 
-    model = SAC('MlpPolicy', VecFrameStack(env, n_stack=25), policy_kwargs=policy_kwargs, tensorboard_log=savedir, **config)
+    model = SAC('MlpPolicy', VecFrameStack(env, n_stack=13), policy_kwargs=policy_kwargs, tensorboard_log=savedir, **config)
     model.learn(15000000, callback=[checkpoint_callback], log_interval=1)
 
    
