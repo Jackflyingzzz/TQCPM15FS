@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
     config["ent_coef"] = "auto_0.01"
     config["target_entropy"] = "auto"
-    policy_kwargs = dict(net_arch=dict(pi=[256, 256], qf=[512, 512, 512]))
+    policy_kwargs = dict(net_arch=dict(pi=[256, 256, 256], qf=[512, 512, 512]))
     checkpoint_callback = CheckpointCallback(
                                             save_freq=max(5, 1),
                                             #num_to_keep=5,
