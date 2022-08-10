@@ -6,7 +6,7 @@ import socket
 import numpy as np
 from tqdm import tqdm
 from simulation_base.env import resume_env, nb_actuations
-
+from sb3_contrib import TQC
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecNormalize, VecFrameStack
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.logger import Logger, HumanOutputFormat, DEBUG
@@ -34,11 +34,16 @@ if __name__ == '__main__':
     number_servers = args["number_servers"]
     savedir = args["savedir"]
 
-    config = {}
 
-    config["learning_rate"] = 1e-4
+    config["learning_rate"] = 3e-4
     config["learning_starts"] = 0
     config["batch_size"] = 128
+    config["top_quantiles_to_drop_per_net"] = 2
+    config["policy_kwargs"] = {
+                                "n_critics": 5,
+                                "n_quantiles": 25,
+                                "net_arch": dict(pi=[256, 256], qf=[512, 512, 512])
+                                }
 
     config["tau"] = 5e-3
     config["gamma"] = 0.99
@@ -51,19 +56,18 @@ if __name__ == '__main__':
 
     config["ent_coef"] = "auto_0.01"
     config["target_entropy"] = "auto"
-    policy_kwargs = dict(net_arch=dict(pi=[256, 256, 256], qf=[512, 512, 512]))
     checkpoint_callback = CheckpointCallback(
-                                            save_freq=max(5, 1),
+                                            save_freq=max(10, 1),
                                             #num_to_keep=5,
                                             #save_buffer=True,
                                             #save_env_stats=True,
                                             save_path=savedir,
-                                            name_prefix='SAC_model')
+                                            name_prefix='TQC_model')
 
 
     env = SubprocVecEnv([resume_env(nb_actuations,i) for i in range(number_servers)], start_method='spawn')
 
-    model = SAC('MlpPolicy', VecFrameStack(env, n_stack=13), policy_kwargs=policy_kwargs, tensorboard_log=savedir, **config)
+    model = TQC('MlpPolicy', VecFrameStack(env, n_stack=13), policy_kwargs=policy_kwargs, tensorboard_log=savedir, **config)
     model.learn(15000000, callback=[checkpoint_callback], log_interval=1)
 
    
