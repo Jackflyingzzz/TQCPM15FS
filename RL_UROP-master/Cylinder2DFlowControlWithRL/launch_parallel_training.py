@@ -35,21 +35,21 @@ if __name__ == '__main__':
     savedir = args["savedir"]
 
 
+    config = {}
     config["learning_rate"] = 3e-4
     config["learning_starts"] = 0
     config["batch_size"] = 128
-    config["top_quantiles_to_drop_per_net"] = 2
+    config["top_quantiles_to_drop_per_net"] = 3
     config["policy_kwargs"] = {
                                 "n_critics": 5,
                                 "n_quantiles": 25,
                                 "net_arch": dict(pi=[256, 256], qf=[512, 512, 512])
                                 }
-
     config["tau"] = 5e-3
     config["gamma"] = 0.99
     config["train_freq"] = 1
     config["target_update_interval"] = 1
-    config["gradient_steps"] = 20
+    config["gradient_steps"] = 48
 
     config["buffer_size"] = int(10e5)
     config["optimize_memory_usage"] = False
@@ -62,12 +62,12 @@ if __name__ == '__main__':
                                             #save_buffer=True,
                                             #save_env_stats=True,
                                             save_path=savedir,
-                                            name_prefix='TQC_model')
+                                            name_prefix='TQC2SP_model')
 
 
     env = SubprocVecEnv([resume_env(nb_actuations,i) for i in range(number_servers)], start_method='spawn')
-
-    model = TQC('MlpPolicy', VecFrameStack(env, n_stack=13), policy_kwargs=policy_kwargs, tensorboard_log=savedir, **config)
+    env = VecFrameStack(env, n_stack=13)
+    model = TQC('MlpPolicy', VecNormalize(env, gamma=0.99), tensorboard_log=savedir, **config)
     model.learn(15000000, callback=[checkpoint_callback], log_interval=1)
 
    
