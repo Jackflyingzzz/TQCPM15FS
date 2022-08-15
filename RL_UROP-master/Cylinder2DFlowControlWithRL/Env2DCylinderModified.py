@@ -874,7 +874,7 @@ class Env2DCylinderModified(gym.Env):
             else:
                 shape = (2,)
             
-            next_state.append(np.zeros(shape=shape))
+            next_state = np.append(next_state, action)
 
             for n_hist in range(self.optimization_params["num_steps_in_pressure_history"]-1):
                 self.history_actions.appendleft(np.zeros(shape=shape))
@@ -986,7 +986,7 @@ class Env2DCylinderModified(gym.Env):
 
         # Update action history buffer if action history is included in state
         if self.output_params["include_actions"]:
-            next_state.append(action)
+            next_state = np.append(next_state, action)
 
             for n_hist in range(self.optimization_params["num_steps_in_pressure_history"]-1):
                 key = "prev_act_" + str(n_hist + 1)
