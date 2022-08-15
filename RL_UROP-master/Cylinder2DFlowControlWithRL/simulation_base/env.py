@@ -41,7 +41,7 @@ def resume_env(plot=False,  # To plot results (Field, controls, lift, drag, rec 
         dt = 0.004
         single_input = False
         single_output = False
-        include_actions = False
+        include_actions = True
 
         root = 'mesh/turek_2d'  # Root of geometry file path
         if (not os.path.exists('mesh')):
@@ -90,7 +90,7 @@ def resume_env(plot=False,  # To plot results (Field, controls, lift, drag, rec 
                          # whether to feed as input probe values or difference between average top/bottom pressures
                          'single_output': single_output,  # whether policy network outputs one or two outputs
                          'symmetric': False,
-                         'include_actions': include_actions
+                         'include_actions': True
                          }
 
         optimization_params = {"num_steps_in_pressure_history": 1,
