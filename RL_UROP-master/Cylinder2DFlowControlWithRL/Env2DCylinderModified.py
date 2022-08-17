@@ -874,7 +874,7 @@ class Env2DCylinderModified(gym.Env):
             else:
                 shape = (2,)
             
-            next_state = np.append(next_state, action)
+            next_state = np.append(next_state, np.zeros(shape=shape))
 
             for n_hist in range(self.optimization_params["num_steps_in_pressure_history"]-1):
                 self.history_actions.appendleft(np.zeros(shape=shape))
