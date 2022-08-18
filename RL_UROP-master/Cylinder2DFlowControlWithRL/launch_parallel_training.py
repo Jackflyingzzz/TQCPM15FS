@@ -62,11 +62,11 @@ if __name__ == '__main__':
                                             #save_buffer=True,
                                             #save_env_stats=True,
                                             save_path=savedir,
-                                            name_prefix='TQC2SP6FS_model')
+                                            name_prefix='TQC2SP30FS_model')
 
 
     env = SubprocVecEnv([resume_env(nb_actuations,i) for i in range(number_servers)], start_method='spawn')
-    env = VecFrameStack(env, n_stack=6)
+    env = VecFrameStack(env, n_stack=30)
     model = TQC('MlpPolicy', VecNormalize(env, gamma=0.99), tensorboard_log=savedir, **config)
     model.learn(15000000, callback=[checkpoint_callback], log_interval=1)
 
