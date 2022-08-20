@@ -19,8 +19,8 @@ from gym.wrappers.time_limit import TimeLimit
 import os
 cwd = os.getcwd()
 
-nb_actuations = 200 # Number of actions (NN actuations) taken per episode (Number of action intervals)
-simulation_duration = 100
+nb_actuations = 400 # Number of actions (NN actuations) taken per episode (Number of action intervals)
+simulation_duration = 200
 
 def resume_env(plot=False,  # To plot results (Field, controls, lift, drag, rec area) during training
                dump_vtu=False,  # If not False, create vtu files of area, velocity, pressure, every 'dump_vtu' steps
@@ -37,7 +37,7 @@ def resume_env(plot=False,  # To plot results (Field, controls, lift, drag, rec 
         # ---------------------------------------------------------------------------------
         # the configuration version number 1
 
-        simulation_duration = 100.0  # duree en secondes de la simulation #50.0 default
+        simulation_duration = 200  # duree en secondes de la simulation #50.0 default
         dt = 0.004
         single_input = False
         single_output = False
