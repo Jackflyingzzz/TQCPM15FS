@@ -57,7 +57,7 @@ if __name__ == '__main__':
     config["ent_coef"] = "auto_0.01"
     config["target_entropy"] = "auto"
     checkpoint_callback = CheckpointCallback(
-                                            save_freq=max(10, 1),
+                                            save_freq=max(5, 1),
                                             #num_to_keep=5,
                                             #save_buffer=True,
                                             #save_env_stats=True,
