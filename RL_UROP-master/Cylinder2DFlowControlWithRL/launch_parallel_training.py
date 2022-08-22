@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
 
     config = {}
-    config["learning_rate"] = 3e-4
+    config["learning_rate"] = 5e-5
     config["learning_starts"] = 0
     config["batch_size"] = 128
     config["top_quantiles_to_drop_per_net"] = 3
